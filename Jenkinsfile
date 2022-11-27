@@ -1,54 +1,71 @@
-node
- {
-  
-  def mavenHome = tool name: "maven3.6.2"
-  
-      echo "GitHub BranhName ${env.BRANCH_NAME}"
-      echo "Jenkins Job Number ${env.BUILD_NUMBER}"
-      echo "Jenkins Node Name ${env.NODE_NAME}"
-  
-      echo "Jenkins Home ${env.JENKINS_HOME}"
-      echo "Jenkins URL ${env.JENKINS_URL}"
-      echo "JOB Name ${env.JOB_NAME}"
-  
-   properties([[$class: 'JiraProjectProperty'], buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '2', daysToKeepStr: '', numToKeepStr: '2')), pipelineTriggers([pollSCM('* * * * *')])])
-  
-  stage("CheckOutCodeGit")
-  {
-   git branch: 'development', credentialsId: '65fb834f-a83b-4fe7-8e11-686245c47a65', url: 'https://github.com/team16flight/web-app.git'
- }
- 
- stage("Build")
- {
- sh "${mavenHome}/bin/mvn clean package"
- }
- 
-  /*
- stage("ExecuteSonarQubeReport")
- {
- sh "${mavenHome}/bin/mvn sonar:sonar"
- }
- 
- stage("UploadArtifactsintoNexus")
- {
- sh "${mavenHome}/bin/mvn deploy"
- }
- 
-  stage("DeployAppTomcat")
- {
-  sshagent(['423b5b58-c0a3-42aa-af6e-f0affe1bad0c']) {
-    sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war  ec2-user@15.206.91.239:/opt/apache-tomcat-9.0.34/webapps/" 
-  }
- }
- 
- stage('EmailNotification')
- {
- mail bcc: 'info@acadalearning.com', body: '''Build is over
-
- Thanks,
- Acada Learning,
- 9980923226.''', cc: 'info@acadalearning.com', from: '', replyTo: '', subject: 'Build is over!!', to: 'info@acadalearning.com'
- }
- */
- 
- }
+pipeline{
+    agent any
+    tools {
+        maven 'maven386'
+    }
+    
+    stages {
+        stage('1.gitClone') {
+            steps {
+                sh "echo start git clone"
+                git credentialsId: 'Github-Cred', url: 'https://github.com/owseaman/maven-web-app.git'
+            }
+        }
+        
+        stage('2.build the app') {
+            steps {
+                sh 'echo Building the app package'
+                sh 'mvn clean package'
+                
+            }
+              
+             
+        }
+        
+        stage('3. Code Test') {
+            steps {
+                sh "echo install sonarQube first then use mvn sonar:sonar for code quality test"
+                //sh "mvn sonar:sonar"
+            }
+        }
+        
+        stage('4. Artifactory') {
+            steps {
+                sh 'echo artifact backup to artifactory e.g Nexus'
+                //sh 'mvn deploy'
+            }    
+        }
+        
+        stage('5.slackMessage') {
+            steps {
+                sh "echo Awaiting approval"
+                //slackSend message: 'DeployedforUAT, expecting approval'
+            }
+        }
+        
+        stage("6.deploytoUAT") {
+            steps {
+                sh "echo deploy to web server e.g Nginx or Apache Tomcat for User Acceptance Testing"
+            }
+        }
+        
+        stage('7.approvalNeededforProduction') {
+            steps {
+                input message: 'for your approval for Production', parameters: [choice(choices: ['Proceed', 'Wait', 'Abort'], description: 'Description to show user', name: 'Proceed?')]
+                // timeout(time:5, unit:'DAYS') {input message: 'Approval for Production'}
+            }
+        }
+        
+        stage("8.deploytoPROD") {
+            steps {
+                sh "echo deploy to Production"
+            }
+        }    
+        
+       stage('9.emailNotifs') {
+           steps {
+               emailext body: 'You are one of the Build users', recipientProviders: [buildUser()], subject: 'Hey, Build User!', to: 'esowoeye@gmail.com'
+            }   
+        }
+    }
+}    
