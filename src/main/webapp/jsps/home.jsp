@@ -30,7 +30,7 @@
 <hr>
 <hr>
 <p align=center>At Suncor, we extract, produce and provide energy from a mix of sources, ranging from oil sands to wind and renewable fuels..</p>
-<p align=center><small>Copyrights 2022 by <a href="https://www.suncor.com/en-ca/what-we-do">ACADA Learning</a> </small></p>
+<p align=center><small>Copyrights 2022 by <a href="https://www.suncor.com/en-ca/what-we-do">Suncor DPC</a> </small></p>
 
 </body>
 </html>
