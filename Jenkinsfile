@@ -36,6 +36,39 @@ pipeline{
             }    
         }
         
+        stage('Docker Image Build') {
+            steps {
+                sh "docker build -t owseaman/dpc-demo ."
+            }
+        }
+        
+        stage("Push image to Container Registry-Dockerhub/ECR etc") {
+            steps {
+               withCredentials([string(credentialsId: 'Dockerhub-Cred', variable: 'DHC_Var')]) {
+    // some block
+
+
+                sh 'docker login -u owseaman -p $DHC_Var'
+                
+                sh 'docker push owseaman/dpc-demo'
+                
+                    
+                }
+            }
+        }
+        
+        stage(removeContainerImages) {
+            steps {
+                sh 'docker rmi $(docker images -q)'
+            }
+        }
+        
+        stage('K8s Deployment') {
+			steps {
+			    sh 'kubectl apply -f maven-web-app.yml'
+			}	
+        }
+        
         stage('5.slackMessage') {
             steps {
                 sh "echo Awaiting approval"
