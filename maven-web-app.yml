@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mavenapp-pod
+  namespace: dev
+  labels:
+    app: mavenapp
+spec:
+  containers:
+  - name: mavenapp-c
+    image: acadalearning/maven-web-app
+    ports:
+    - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mavenappsvc
+  namespace: dev
+spec:
+  selector:
+    app: mavenapp
+  ports:
+  - port: 80
+    targetPort: 8080
