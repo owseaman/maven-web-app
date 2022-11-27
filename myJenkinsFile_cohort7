@@ -63,7 +63,7 @@ pipeline{
         
         /*stage('anotherSlackforCohort7Grp4') {
             steps {
-            slackSend channel: 'cohort-7_group-4', message: 'Channel message', teamDomain: 'acadalearning', tokenCredentialId: 'Acada'
+            slackSend channel: 'C7', message: 'Channel message', teamDomain: 'DPC', tokenCredentialId: 'Dalas'
             }
         }*/
         
