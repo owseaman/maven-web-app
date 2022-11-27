@@ -12,8 +12,8 @@
 	<description>Maven Web Project for Java Project</description>
 
 	<organization>
-		<name>Acada Learning</name>
-		<url>http://acadalearning.com/</url>
+		<name>EMMANUEL'S DPC PRESENTATION</name>
+		<url>http://www.suncor.com/dpc</url>
 	</organization>
 
 	<properties>
@@ -98,14 +98,14 @@
 	<distributionManagement>
 	    <repository>
 	      <id>nexus</id>
-	      <name>Acada Learning Releases Nexus Repository</name>
+	      <name>DPC Releases Nexus Repository</name>
 	      <!-- <url>http://192.168.0.48:8081/repository/rbc-app-release/</url> -->
 	      <url>http://192.168.0.48:8081/repository/jenkinsSharedLibrary/</url>
 	    </repository>
 	    
 	    <snapshotRepository>
 	      <id>nexus</id>
-	      <name>Acada Learning Snapshot Nexus Repository</name>
+	      <name>DPC Snapshot Nexus Repository</name>
 	      <!-- <url>http://192.168.0.48:8081/repository/rbc-app-snapshot/</url> -->
 	      <url>http://192.168.0.48:8081/repository/jenkinsSharedLibrary/</url>
 	    </snapshotRepository>
