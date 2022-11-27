@@ -14,7 +14,7 @@
 <hr>
 <div style="text-align: center;">
 	<span>
-		<img src="images/DP black.png" alt="" width="100">
+		<img src="images/Investor day banner.jpeg" alt="" width="100">
 	</span>
 	<span style="font-weight: bold;">
 		DevOps Engineer : Emmanuel Owoeye, 
