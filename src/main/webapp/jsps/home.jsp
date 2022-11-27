@@ -8,7 +8,7 @@
 </head>
 </head>
 <body>
-<h1 align="center">ACADA Learning</h1>
+<h1 align="center">SUNCOR</h1>
 <h2 align="center"> Welcome to Suncor. 
 	This is a maven web app demo for DPC project</h2>
 <hr>
