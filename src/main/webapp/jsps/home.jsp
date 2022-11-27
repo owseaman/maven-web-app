@@ -22,7 +22,7 @@
 		+1 587 664 8156,
 		suncor.com/esowoeye
 		<br>
-		<a href="mailto:info@acadalearning.com">Mail to Suncor</a>
+		<a href="mailto:esowoeye@gmail.com">Mail to Suncor</a>
 	</span>
 </div>
 <hr>
