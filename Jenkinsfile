@@ -45,9 +45,7 @@ pipeline{
         stage('6. Push image to Container Registry-Dockerhub/ECR etc') {
             steps {
                withCredentials([string(credentialsId: 'Dockerhub-Cred', variable: 'DHC_Var')]) {
-    // some block
-
-
+    
                 sh 'docker login -u owseaman -p $DHC_Var'
                 
                 sh 'docker push owseaman/dpc-demo'
