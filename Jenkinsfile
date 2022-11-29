@@ -39,6 +39,8 @@ pipeline{
         stage('5. Docker Image Build') {
             steps {
                 sh 'docker build -t owseaman/dpc-demo .'
+		//If you get an error in this "Docker Image Build" section, uncomment the next line
+		//sh 'sudo chmod 666 /var/run/docker.sock'
             }
         }
         
