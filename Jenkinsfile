@@ -5,14 +5,14 @@ pipeline{
     }
     
     stages {
-        stage('1.gitClone') {
+        stage('1.SCM Clone') {
             steps {
-                sh "echo start git clone"
+                sh 'echo Starting Git clone'
                 git credentialsId: 'Github-Cred', url: 'https://github.com/owseaman/maven-web-app.git'
             }
         }
         
-        stage('2.build the app') {
+        stage('2.Build the app') {
             steps {
                 sh 'echo Building the app package'
                 sh 'mvn clean package'
@@ -22,9 +22,9 @@ pipeline{
              
         }
         
-        stage('3. Code Test') {
+        stage('3. Code Test SAST e.g sonarqube, selenium') {
             steps {
-                sh "echo install sonarQube first then use mvn sonar:sonar for code quality test"
+                sh 'echo install sonarQube first then use mvn sonar:sonar for code quality test'
                 //sh "mvn sonar:sonar"
             }
         }
@@ -36,13 +36,13 @@ pipeline{
             }    
         }
         
-        stage('Docker Image Build') {
+        stage('5. Docker Image Build') {
             steps {
-                sh "docker build -t owseaman/dpc-demo ."
+                sh 'docker build -t owseaman/dpc-demo .'
             }
         }
         
-        stage("Push image to Container Registry-Dockerhub/ECR etc") {
+        stage('6. Push image to Container Registry-Dockerhub/ECR etc') {
             steps {
                withCredentials([string(credentialsId: 'Dockerhub-Cred', variable: 'DHC_Var')]) {
     // some block
@@ -57,45 +57,46 @@ pipeline{
             }
         }
         
-        stage(removeContainerImages) {
+        stage('7. Remove Container Images') {
             steps {
+		sh 'echo gotta save some space in the instance'    
                 sh 'docker rmi $(docker images -q)'
             }
         }
         
-        stage('K8s Deployment') {
+        stage('8. K8s Deployment') {
 			steps {
 			    sh 'kubectl apply -f maven-web-app.yml'
 			}	
         }
         
-        stage('5.slackMessage') {
+        stage('9. slackMessage') {
             steps {
-                sh "echo Awaiting approval"
+                sh 'echo Awaiting approval from Team/project Lead'
                 //slackSend message: 'DeployedforUAT, expecting approval'
             }
         }
         
-        stage("6.deploytoUAT") {
+        stage('10. Deploy to UAT') {
             steps {
-                sh "echo deploy to web server e.g Nginx or Apache Tomcat for User Acceptance Testing"
+                sh 'echo deploy to web server e.g Nginx or Apache Tomcat for User Acceptance Testing'
             }
         }
         
-        stage('7.approvalNeededforProduction') {
+        stage('11. Approval Needed for Production') {
             steps {
                 input message: 'for your approval for Production', parameters: [choice(choices: ['Proceed', 'Wait', 'Abort'], description: 'Description to show user', name: 'Proceed?')]
                 // timeout(time:5, unit:'DAYS') {input message: 'Approval for Production'}
             }
         }
         
-        stage("8.deploytoPROD") {
+        stage('12. Deploy to Production') {
             steps {
-                sh "echo deploy to Production"
+                sh 'echo deployed to Production'
             }
         }    
         
-       stage('9.emailNotifs') {
+       stage('13. Email Notifs') {
            steps {
                emailext body: 'You are one of the Build users', recipientProviders: [buildUser()], subject: 'Hey, Build User!', to: 'esowoeye@gmail.com'
             }   
