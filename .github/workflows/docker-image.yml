@@ -22,8 +22,8 @@ jobs:
      - name: Build with Maven
        run: mvn package
        
-     - run: ${PWD}
-     - run: $GITHUB_WORKSPACE
+     - run: echo ${PWD}
+     - run: echo $GITHUB_WORKSPACE
      
      - uses: actions/checkout@v3
      - name: Build the Docker image
