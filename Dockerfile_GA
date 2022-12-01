@@ -1,5 +1,7 @@
-FROM tomcat:8.0.20-jre8
+FROM tomcat:8.0.20-jre8 AS build
+COPY . .
 
-COPY **/*.war /usr/local/tomcat/webapps/maven-web-app.war
+FROM tomcat:8.0.20-jre8
+COPY --from=build **/*.war /usr/local/tomcat/webapps/maven-web-app.war
 
 # COPY /home/runner/work/maven-web-app/maven-web-app/target/maven-web-app.war /usr/local/tomcat/webapps/maven-web-app.war
