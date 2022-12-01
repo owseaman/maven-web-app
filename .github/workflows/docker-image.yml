@@ -24,7 +24,6 @@ jobs:
        
      - run: echo ${PWD}
      - run: echo $GITHUB_WORKSPACE
-     - run: cp /home/runner/work/maven-web-app/maven-web-app/target/maven-web-app.war .
      
      - uses: actions/checkout@v3
      - name: Build the Docker image
